@@ -1,6 +1,6 @@
-cluster: "PBS-Torque-Profile/pbs-submit.py --depend \"{dependencies}\""
-cluster-status: "PBS-Torque-Profile/pbs-status.py"
-jobscript: "PBS-Torque-Profile/pbs-jobscript.sh"
+cluster: "config/PBS-Torque-Profile/pbs-submit.py --depend \"{dependencies}\""
+cluster-status: "oonfig/PBS-Torque-Profile/pbs-status.py"
+jobscript: "config/PBS-Torque-Profile/pbs-jobscript.sh"
 jobs: 8
 immediate-submit: False
 verbose: true
