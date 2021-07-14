@@ -1,4 +1,4 @@
-name: Snakemake Linter
+name: Snakemake Unit Tests
 on: [push, pull_request]
 
 jobs:

@@ -10,8 +10,12 @@ configfile: os.path.join("config", "config.json")
 
 validate(config, os.path.join("..", "config", "config.schema.json"))
 
+
 include: "rules/init.smk"
+
+
 DataPrepList = DataPrepRequirements()
+
 
 rule all:
     """
@@ -19,8 +23,31 @@ rule all:
     """
 
     input:
-        expand("results/{filename}.vcf.gz", filename=DataPrepList['gzVCF']),
-        expand("results/{filename}.vcf.gz.tbi", filename=DataPrepList['TABIX'])
+        expand("results/VALIDATED/{filename}.vcf.gz", filename=DataPrepList["gzVCF"]),
+        expand(
+            "results/VALIDATED/{filename}.vcf.gz.tbi", filename=DataPrepList["TABIX"]
+        ),
+
+
+rule CP:
+    """
+    Copy any VCF files that have already been BG-Zipped and have a Tabix Index accross
+    """
+
+    log:
+        "results/PREPARED/CP_V_{name}.log",
+    input:
+        expand("resources/data/{{name}}.{ext}", ext=["vcf.gz", "vcf.gz.tbi"]),
+    output:
+        expand(
+            "results/PREPARED/{name}.{ext}",
+            name=DataPrepList["MV"],
+            ext=["vcf.gz", "vcf.gz.tbi"],
+        ),
+    shell:
+        """
+        CP {input} {output}
+        """
 
 
 rule BGZIP:
@@ -29,12 +56,18 @@ rule BGZIP:
     """
 
     log:
-        "logs/BGZIP/{name}.log",
+        "results/PREPARED/BGZIP_{name}.log",
     input:
-        "{path}/{name}.vcf",
+        "resources/data/{name}.vcf",
     output:
-        "{path}/{name}.vcf.gz",
-    conda: "envs/GATK4.yaml"
+        expand("results/PREPARED/{name}.vcf.gz", name=DataPrepList["gzVCF"]),
+    conda:
+        "envs/GATK4.yaml"
+    resources:
+        cpus=10,
+        nodes=1,
+        queue="long",
+        walltime="900:00:00",
     shell:
         """
         bgzip {input}
@@ -47,12 +80,16 @@ rule TABIX_INDEXING:
     """
 
     log:
-        "logs/TABIX_INDEXING/{name}.log",
+        "results/PREPARED/TABIX_INDEXING_{name}.log",
     input:
-        "{folder}/{name}.vcf.gz",
+        "results/PREPARED/{name}.vcf.gz",
     output:
-        "{folder}/{name}.vcf.gz",
-        "{folder}/{name}.vcf.gz.tbi",
+        expand("results/PREPARED/{name}.vcf.gz", name=DataPrepList["gzVCF"]),
+    resources:
+        cpus=10,
+        nodes=1,
+        queue="long",
+        walltime="900:00:00",
     shell:
         """
         tabix -f -p vcf {input}
@@ -65,11 +102,11 @@ rule FORMAT_VALIDATION:
     """
 
     log:
-        "logs/FORMAT_VALIDATION/{sample}.log",
+        "logs/VALIDATED/FORMAT_VALIDATION_{sample}.log",
     input:
-        "resources/{sample}.vcf.gz",
+        "results/PREPARED/{name}.vcf.gz",
     output:
-        "results/FORMAT_VALIDATION/{sample}.vcf.gz",
+        "results/VALIDATED/{name}.vcf.gz",
     params:
         ref=config["Reference Genome"]["Path"],
         dbsnp=config["dbSNP"]["Path"],

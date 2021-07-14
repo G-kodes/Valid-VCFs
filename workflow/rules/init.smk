@@ -1,17 +1,12 @@
 import re
 import os
 import glob
-from typing import TypedDict, List
 
 
-class DataPrepList(TypedDict):
-    gzVCF: List[str]
-    TABIX: List[str]
-
-
-def DataPrepRequirements() -> DataPrepList:
+def DataPrepRequirements():
     """Determine data-preperation requirements based on provided data in `../resources/data` folder of workflow.
     """
+
 
     regexes = {
         "gzVCF": r"^resources[\/]data[\/](.*)(\.vcf\.gz)$",
@@ -19,7 +14,7 @@ def DataPrepRequirements() -> DataPrepList:
         "TABIX": r"^resources[\/]data[\/](.*)(\.vcf\.gz\.tbi)$",
     }
     data = dict(regexes)
-    results = dict(gzVCF=list(), TABIX=list())
+    results = dict(gzVCF=list(), TABIX=list(), MV=list())
     dataDir = os.path.join("resources", "data")
 
     for name, inputRegex in regexes.items():
@@ -33,10 +28,10 @@ def DataPrepRequirements() -> DataPrepList:
         filename for filename in data["VCF"] if filename not in data["gzVCF"]
     }
     results["TABIX"] = {
-        filename for filename in data["gzVCF"] if filename not in data["TABIX"]
+        filename
+        for filename in data["gzVCF"]
+        if filename not in data["TABIX"] and filename not in data["VCF"]
     }
-    results["TABIX"].update(
-        {filename for filename in data["VCF"] if filename not in data["gzVCF"]}
-    )
+    results["MV"] = {filename for filename in data["TABIX"] if filename in data["gzVCF"]}
 
     return results
