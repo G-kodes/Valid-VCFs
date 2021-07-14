@@ -30,7 +30,7 @@ rule all:
             filename=DataPrepList["ALL"],
             ext=["vcf.gz", "vcf.gz.tbi"],
         ),
-
+results/VALIDATED/TSI.exon.2010_03.sites.vcf.gz.tbi
 
 rule CP:
     """
@@ -107,6 +107,7 @@ rule FORMAT_VALIDATION:
         "results/PREPARED/{name}.vcf.gz.tbi",
     output:
         "results/VALIDATED/{name}.vcf.gz",
+        "results/VALIDATED/{name}.vcf.gz.tbi",
     params:
         refPath=config["Reference Genome"]["Folder Name"],
         refName=config["Reference Genome"]["Name"] + ".fz.gz",
