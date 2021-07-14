@@ -38,9 +38,11 @@ rule CP:
     log:
         "results/PREPARED/CP_V_{name}.log",
     input:
-        "resources/data/{name}.vc{ext}",
+        "resources/data/{name}.vcf.gz",
+        "resources/data/{name}.vcf.gz.tbi",
     output:
-        "results/PREPARED/{name}.vc{ext}",
+        "results/PREPARED/{name}.vcf.gz",
+        "results/PREPARED/{name}.vcf.gz,tbi",
     shell:
         """
         CP {input} {output}
@@ -106,7 +108,8 @@ rule FORMAT_VALIDATION:
     output:
         "results/VALIDATED/{name}.vcf.gz",
     params:
-        ref=config["Reference Genome"]["Path"],
+        refPath=config["Reference Genome"]["Folder Name"],
+        refName=config["Reference Genome"]["Name"] + ".fz.gz",
         dbsnp=config["dbSNP"]["Path"],
         memory="128G",
     resources:
@@ -118,5 +121,5 @@ rule FORMAT_VALIDATION:
         "envs/GATK4.yaml"
     shell:
         """
-        gatk ValidateVariants -V {input} -R {params.ref} -D {params.dbsnp}
+        gatk ValidateVariants -V {input} -R {params.refPath}/{params.refName} -D {params.dbsnp}
         """
