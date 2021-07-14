@@ -30,7 +30,6 @@ rule all:
             filename=DataPrepList["ALL"],
             ext=["vcf.gz", "vcf.gz.tbi"],
         ),
-results/VALIDATED/TSI.exon.2010_03.sites.vcf.gz.tbi
 
 rule CP:
     """
