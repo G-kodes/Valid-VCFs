@@ -3,7 +3,7 @@
 </div>
 <hr />
 <div align="center">
-    <img src="https://github.com/G-kodes/Valid-VCFs/actions/workflows/lint.yaml/badge.svg" />
+    <img src="https://github.com/G-kodes/Valid-VCFs/actions/workflows/test.yaml/badge.svg" />
 </div>
 
 <div align="left">
