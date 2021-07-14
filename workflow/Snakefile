@@ -23,9 +23,10 @@ rule all:
     """
 
     input:
-        expand("results/VALIDATED/{filename}.vcf.gz", filename=DataPrepList["gzVCF"]),
         expand(
-            "results/VALIDATED/{filename}.vcf.gz.tbi", filename=DataPrepList["TABIX"]
+            "results/VALIDATED/{filename}.{ext}",
+            filename=DataPrepList["ALL"],
+            ext=["vcf.gz", "vcf.gz.tbi"],
         ),
 
 
@@ -37,13 +38,9 @@ rule CP:
     log:
         "results/PREPARED/CP_V_{name}.log",
     input:
-        expand("resources/data/{{name}}.{ext}", ext=["vcf.gz", "vcf.gz.tbi"]),
+        "resources/data/{name}.vc{ext}",
     output:
-        expand(
-            "results/PREPARED/{name}.{ext}",
-            name=DataPrepList["MV"],
-            ext=["vcf.gz", "vcf.gz.tbi"],
-        ),
+        "results/PREPARED/{name}.vc{ext}",
     shell:
         """
         CP {input} {output}
@@ -60,7 +57,7 @@ rule BGZIP:
     input:
         "resources/data/{name}.vcf",
     output:
-        expand("results/PREPARED/{name}.vcf.gz", name=DataPrepList["gzVCF"]),
+        "results/PREPARED/{name}.vcf.gz",
     conda:
         "envs/GATK4.yaml"
     resources:
@@ -84,7 +81,7 @@ rule TABIX_INDEXING:
     input:
         "results/PREPARED/{name}.vcf.gz",
     output:
-        expand("results/PREPARED/{name}.vcf.gz", name=DataPrepList["gzVCF"]),
+        "results/PREPARED/{name}.vcf.gz.tbi",
     resources:
         cpus=10,
         nodes=1,
@@ -102,9 +99,10 @@ rule FORMAT_VALIDATION:
     """
 
     log:
-        "logs/VALIDATED/FORMAT_VALIDATION_{sample}.log",
+        "logs/VALIDATED/FORMAT_VALIDATION_{name}.log",
     input:
         "results/PREPARED/{name}.vcf.gz",
+        "results/PREPARED/{name}.vcf.gz.tbi",
     output:
         "results/VALIDATED/{name}.vcf.gz",
     params:
