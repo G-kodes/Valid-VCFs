@@ -13,6 +13,8 @@ validate(config, os.path.join("..", "config", "config.schema.json"))
 
 include: "rules/init.smk"
 
+ruleorder: CP < TABIX_INDEXING
+
 
 DataPrepList = DataPrepRequirements()
 
@@ -38,11 +40,9 @@ rule CP:
     log:
         "results/PREPARED/CP_V_{name}.log",
     input:
-        "resources/data/{name}.vcf.gz",
-        "resources/data/{name}.vcf.gz.tbi",
+        "resources/data/{name}",
     output:
-        "results/PREPARED/{name}.vcf.gz",
-        "results/PREPARED/{name}.vcf.gz,tbi",
+        "results/PREPARED/{name}",
     shell:
         """
         CP {input} {output}
@@ -123,3 +123,7 @@ rule FORMAT_VALIDATION:
         """
         gatk ValidateVariants -V {input} -R {params.refPath}/{params.refName} -D {params.dbsnp}
         """
+MissingInputException: Missing input files for rule CP:
+     34 resources/data/TSI.exon.2010_03.genotypes.vcf.gz.tbi
+     35 MissingInputException: Missing input files for rule BGZIP:
+     36 resources/data/TSI.exon.2010_03.genotypes.vcf
