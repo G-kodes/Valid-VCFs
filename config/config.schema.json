@@ -1,0 +1,67 @@
+{
+    "$schema": "https://json-schema.org/draft-06/schema#",
+    "title": "Snakemake Configuration",
+    "description": "A configuration file for a snakemake pipeline.",
+    "type": "object",
+    "properties": {
+        "Reference Genome": {
+            "description": "The reference genome details needed to validate this VCF file",
+            "type": "object",
+            "properties": {
+                "Name": {
+                    "description": "The version name of the reference genome",
+                    "type": "string"
+                },
+                "Path": {
+                    "description": "The relative file path or URL to a copy of the reference genome in FASTA format",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "Name",
+                "Path"
+            ]
+        },
+        "Reference SNPs": {
+            "description": "The reference SNP file details needed to validate the given input file against",
+            "type": "object",
+            "properties": {
+                "Source Name": {
+                    "description": "The name of the source from which the SNPs will be validated against",
+                    "type": "string"
+                },
+                "Filename": {
+                    "description": "The name of the VCF file, as located in the resources folder",
+                    "type": "string"
+                }
+            },
+            "required": ["Source Name", "Filename"]
+        },
+        "Dataset": {
+            "description": "The dataset to be validated against the VCF spesification",
+            "type": "object",
+            "properties": {
+                "VCF Version": {
+                    "description": "The version number of the VCF spesification to validate against",
+                    "type": "string"
+                },
+                "Name": {
+                    "description": "The name of the dataset to be used in naming the output file",
+                    "type": "string"
+                },
+                "Folder": {
+                    "description": "A relative file path to the folder containing the dataset and its index where applicable",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "VCF Version",
+                "Name",
+                "Folder"
+            ]
+        }
+    },
+    "required": [
+        "Reference Genome"
+    ]
+}

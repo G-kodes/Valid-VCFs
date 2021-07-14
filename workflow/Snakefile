@@ -1,0 +1,75 @@
+from snakemake.utils import min_version, validate
+
+min_version("6.0")
+
+
+# DEFINE CONFIG FILE FOR SNAKEMAKE:
+configfile: os.path.join("config", "config.json")
+
+
+validate(config, os.path.join("..", "config", "config.schema.json"))
+
+
+rule BGZIP:
+    """
+    BGZIP a given un-zipped VCF file.
+    """
+
+    log:
+        "logs/BGZIP/{name}.log",
+    input:
+        "{folder}/{name}.vcf",
+    output:
+        "{folder}/{name}.vcf.gz",
+    conda:
+        "envs/GATK4.yaml"
+    shell:
+        """
+        bgzip {input}
+        """
+
+
+rule TABIX_INDEXING:
+    """
+    Generate a Tabix index for the given VCF file
+    """
+
+    log:
+        "logs/TABIX_INDEXING/{name}.log",
+    input:
+        "{folder}/{name}.vcf.gz",
+    output:
+        "{folder}/{name}.vcf.gz",
+        "{folder}/{name}.vcf.gz.tbi",
+    shell:
+        """
+        tabix -f -p vcf {input}
+        """
+
+
+rule FORMAT_VALIDATION:
+    """
+    Perform spec validation of VCF format.
+    """
+
+    log:
+        "logs/FORMAT_VALIDATION/{sample}.log",
+    input:
+        "resources/{sample}.vcf.gz",
+    output:
+        "results/FORMAT_VALIDATION/{sample}.vcf.gz",
+    params:
+        ref=config["Reference Genome"]["Path"],
+        dbsnp=config["dbSNP"]["Path"],
+        memory="128G",
+    resources:
+        cpus=10,
+        nodes=1,
+        queue="long",
+        walltime="900:00:00",
+    conda:
+        "envs/GATK4.yaml"
+    shell:
+        """
+        gatk ValidateVariants -V {input} -R {params.ref} -D {params.dbsnp}
+        """
