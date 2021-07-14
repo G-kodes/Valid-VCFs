@@ -37,8 +37,8 @@
             },
             "required": ["Source Name", "Filename"]
         },
-        "Dataset": {
-            "description": "The dataset to be validated against the VCF spesification",
+        "Data": {
+            "description": "The data (VCF format) to be validated against the VCF spesification",
             "type": "object",
             "properties": {
                 "VCF Version": {
@@ -47,10 +47,6 @@
                 },
                 "Name": {
                     "description": "The name of the dataset to be used in naming the output file",
-                    "type": "string"
-                },
-                "Folder": {
-                    "description": "A relative file path to the folder containing the dataset and its index where applicable",
                     "type": "string"
                 }
             },
