@@ -13,7 +13,7 @@ validate(config, os.path.join("..", "config", "config.schema.json"))
 
 include: "rules/init.smk"
 
-ruleorder: CP < TABIX_INDEXING
+ruleorder: CP > TABIX_INDEXING
 
 
 DataPrepList = DataPrepRequirements()
