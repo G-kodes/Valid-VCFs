@@ -1,5 +1,5 @@
 from snakemake.utils import min_version, validate
-import glob
+import os
 
 min_version("6.0")
 

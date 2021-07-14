@@ -10,20 +10,21 @@
             "properties": {
                 "Name": {
                     "description": "The version name of the reference genome",
-                    "type": "string"
+                    "type": "string",
+                    "enum": ["GRCh38", "GRCh37"]
                 },
-                "Path": {
-                    "description": "The relative file path or URL to a copy of the reference genome in FASTA format",
-                    "type": "string"
+                "Folder Name": {
+                    "description": "The name of the folder in the projects `resources` folder where the Reference Genome is located.",
+                    "type": "string",
+                    "default": "reference_genome"
                 }
             },
             "required": [
-                "Name",
-                "Path"
+                "Name"
             ]
         },
         "Reference SNPs": {
-            "description": "The reference SNP file details needed to validate the given input file against",
+            "description": "The reference SNP file (VCF format) details needed to validate the given input file against",
             "type": "object",
             "properties": {
                 "Source Name": {
@@ -33,9 +34,17 @@
                 "Filename": {
                     "description": "The name of the VCF file, as located in the resources folder",
                     "type": "string"
+                },
+                "Folder Name": {
+                    "description": "The name of the folder in the projects `resources` folder where the Reference SNPs VCF is located.",
+                    "type": "string",
+                    "default": "reference_snps"
                 }
             },
-            "required": ["Source Name", "Filename"]
+            "required": [
+                "Source Name",
+                "Filename"
+            ]
         },
         "Data": {
             "description": "The data (VCF format) to be validated against the VCF spesification",
@@ -48,12 +57,16 @@
                 "Name": {
                     "description": "The name of the dataset to be used in naming the output file",
                     "type": "string"
+                },
+                "Folder Name": {
+                    "description": "The name of the folder in the projects `resources` folder where the data is located.",
+                    "type": "string",
+                    "default": "data"
                 }
             },
             "required": [
                 "VCF Version",
-                "Name",
-                "Folder"
+                "Name"
             ]
         }
     },

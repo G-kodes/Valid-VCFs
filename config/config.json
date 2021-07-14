@@ -1,0 +1,15 @@
+{
+    "Reference Genome": {
+        "Name": "GRCh38",
+        "Folder Name": "reference_genome"
+    },
+    "Reference SNPs": {
+        "Version": "146",
+        "Filename": "dbsnp_146.hg38.vcf.gz"
+    },
+    "Dataset": {
+        "VCF Version": "VCFv4.0",
+        "Name": "1000 Genomes Testers",
+        "Folder": "data"
+    }
+}

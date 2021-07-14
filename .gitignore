@@ -154,4 +154,3 @@ cython_debug/
 # Pipeline exclusions
 results/*
 resources/*
-config.json
