@@ -4,6 +4,7 @@
         "Folder Name": "reference_genome"
     },
     "Reference SNPs": {
+        "Source Name": "dbSNP",
         "Version": "146",
         "Filename": "dbsnp_146.hg38.vcf.gz"
     },
