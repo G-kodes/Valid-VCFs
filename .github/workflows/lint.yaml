@@ -1,0 +1,15 @@
+name: Snakemake Linter
+on: [push, pull_request]
+
+jobs:
+  Lint_Pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Linting
+        uses: snakemake/snakemake-github-action@v1.19.0
+        with:
+          directory: '.test'
+          snakefile: 'workflow/Snakefile'
+          args: '--lint'
