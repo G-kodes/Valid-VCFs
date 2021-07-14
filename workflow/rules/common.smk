@@ -5,4 +5,4 @@ def directoryExists(path: str):
         path (str): file path of the directory to test.
     """
     if not os.path.exists(path):
-                    os.makedirs(path)
+        os.makedirs(path)
