@@ -147,6 +147,7 @@ nodes = ""
 ppn = ""
 mem = ""
 walltime = ""
+module_loads = ''
 
 if "threads" in job_properties:
     ppn = "ppn=" + str(job_properties["threads"])
@@ -165,6 +166,10 @@ if "resources" in job_properties:
         mem = "mem=" + str(resources["mem"])
     if "walltime" in resources:
         walltime = "walltime=" + str(resources["walltime"])
+
+    if 'module_loads' in resources:
+        module_loads = "module load " + \
+            resources['module_loads'].join(" ") + ' &&'
 
 if nodes or ppn or mem or walltime:
     resourceparams = " -l \""
@@ -192,9 +197,9 @@ if "cluster" in job_properties:
         os.makedirs(os.path.dirname(cluster["output"]), exist_ok=True)
         so = " -o " + cluster["output"]
 
-cmd = "qsub {a}{A}{b}{c}{C}{d}{D}{e}{f}{h}{j}{l}{m}{M}{N}{o}{p}{P}{q}{t}{u}{v}{V}{w}{W}{rp}{dep}{ex}".format(
-    a=atime, A=acc_string, b=pbs_time, c=chkpt, C=pref, d=dd, D=rd, e=se, f=ft, h=hold, j=j, l=resource, m=mail, M=mailuser,
-    N=jname, o=so, p=priority, P=proxy, q=q, t=ar, u=user, v=ev, V=eall, w=wd, W=add, rp=resourceparams, dep=depend, ex=extras)
+cmd = "{modules} qsub {a}{A}{b}{c}{C}{d}{D}{e}{f}{h}{j}{l}{m}{M}{N}{o}{p}{P}{q}{t}{u}{v}{V}{w}{W}{rp}{dep}{ex}".format(modules=module_loads,
+                                                                                                                       a=atime, A=acc_string, b=pbs_time, c=chkpt, C=pref, d=dd, D=rd, e=se, f=ft, h=hold, j=j, l=resource, m=mail, M=mailuser,
+                                                                                                                       N=jname, o=so, p=priority, P=proxy, q=q, t=ar, u=user, v=ev, V=eall, w=wd, W=add, rp=resourceparams, dep=depend, ex=extras)
 
 try:
     res = subprocess.run(cmd, check=True, shell=True, stdout=subprocess.PIPE)

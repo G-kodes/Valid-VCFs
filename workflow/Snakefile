@@ -112,13 +112,13 @@ rule FORMAT_VALIDATION:
         refName=config["Reference Genome"]["Name"] + ".fz.gz",
         dbsnp="resources/reference_snps/" + config["Reference SNPs"]["Filename"],
         memory="128G",
-    module_loads:
-        "gatk-4.0.12.0",
     resources:
         cpus=10,
         nodes=1,
         queue="long",
         walltime="900:00:00",
+        module_loads:
+            "gatk-4.0.12.0",
     conda:
         "envs/GATK4.yaml"
     shell:
