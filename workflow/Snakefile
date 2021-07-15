@@ -106,8 +106,8 @@ rule FORMAT_VALIDATION:
     log:
         "logs/VALIDATED/FORMAT_VALIDATION_{name}.log",
     input:
-        "results/PREPARED/{name}.vcf.gz",
-        "results/PREPARED/{name}.vcf.gz.tbi",
+        vcf = "results/PREPARED/{name}.vcf.gz",
+        tabix = "results/PREPARED/{name}.vcf.gz.tbi",
     output:
         "results/VALIDATED/{name}.vcf.gz",
         "results/VALIDATED/{name}.vcf.gz.tbi",
@@ -126,5 +126,5 @@ rule FORMAT_VALIDATION:
         "envs/GATK4.yaml"
     shell:
         """
-        {params.gatk} ValidateVariants -V {input} -R {params.refPath}/{params.refName} -D {params.dbsnp}
+        {params.gatk} ValidateVariants -V {input.vcf} -R {params.refPath}/{params.refName} -D {params.dbsnp}
         """
