@@ -117,8 +117,7 @@ rule FORMAT_VALIDATION:
         nodes=1,
         queue="long",
         walltime="900:00:00",
-        module_loads:
-            "gatk-4.0.12.0",
+        module_loads=["gatk-4.0.12.0"]
     conda:
         "envs/GATK4.yaml"
     shell:
