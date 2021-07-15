@@ -12,5 +12,13 @@
         "VCF Version": "VCFv4.0",
         "Name": "1000 Genomes Testers",
         "Folder": "data"
+    },
+    "Software": {
+        "GATK": {
+            "Executable": "/apps/gatk-4.0.12.0/gatk"
+        },
+        "TABIX": {
+            "Executable": "tabix"
+        }
     }
 }

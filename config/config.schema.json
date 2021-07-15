@@ -51,7 +51,7 @@
                 "Filename"
             ]
         },
-        "Data": {
+        "Dataset": {
             "description": "The data (VCF format) to be validated against the VCF spesification",
             "type": "object",
             "properties": {
@@ -73,9 +73,41 @@
                 "VCF Version",
                 "Name"
             ]
+        },
+        "Software": {
+            "description": "The software executables and their locations needed for this pipeline",
+            "type": "object",
+            "properties": {
+                "GATK": {
+                    "description": "A functional copy of the GATK software, capable of running ValidateVariants",
+                    "type": "object",
+                    "properties": {
+                        "Executable": {
+                            "description": "The absolute file path or reference to the executable `gatk` file",
+                            "type": "string"
+                        }
+                    },
+                    "required": ["Executable"]
+                },
+                "TABIX": {
+                    "description": "A functional copy of the TABIX indexing software",
+                    "type": "object",
+                    "properties": {
+                        "Executable": {
+                            "description": "The absolute file path or reference to the executable `tabix` file",
+                            "type": "string"
+                        }
+                    },
+                    "required": ["Executable"]
+                }
+            },
+            "required": ["GATK"]
         }
     },
     "required": [
-        "Reference Genome"
+        "Reference Genome",
+        "Reference SNPs",
+        "Dataset",
+        "Software"
     ]
 }

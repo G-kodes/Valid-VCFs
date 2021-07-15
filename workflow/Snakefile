@@ -42,6 +42,8 @@ rule CP:
         "resources/data/{name}",
     output:
         "results/PREPARED/{name}",
+    conda:
+        "envs/GATK4.yaml",
     shell:
         """
         cp {input} {output}
@@ -60,7 +62,7 @@ rule BGZIP:
     output:
         "results/PREPARED/{name}.vcf.gz",
     conda:
-        "envs/GATK4.yaml"
+        "envs/GATK4.yaml",
     resources:
         cpus=10,
         nodes=1,
@@ -83,6 +85,8 @@ rule TABIX_INDEXING:
         "results/PREPARED/{name}.vcf.gz",
     output:
         "results/PREPARED/{name}.vcf.gz.tbi",
+    conda:
+        "envs/GATK4.yaml",
     resources:
         cpus=10,
         nodes=1,
@@ -112,6 +116,7 @@ rule FORMAT_VALIDATION:
         refName=config["Reference Genome"]["Name"] + ".fz.gz",
         dbsnp="resources/reference_snps/" + config["Reference SNPs"]["Filename"],
         memory="128G",
+        gatk=config['Software']['GATK']['Executable']
     resources:
         cpus=10,
         nodes=1,
@@ -121,5 +126,5 @@ rule FORMAT_VALIDATION:
         "envs/GATK4.yaml"
     shell:
         """
-        gatk ValidateVariants -V {input} -R {params.refPath}/{params.refName} -D {params.dbsnp}
+        {params.gatk} ValidateVariants -V {input} -R {params.refPath}/{params.refName} -D {params.dbsnp}
         """
