@@ -113,7 +113,7 @@ rule FORMAT_VALIDATION:
         "results/VALIDATED/{name}.vcf.gz.tbi",
     params:
         refPath=config["Reference Genome"]["Folder Name"],
-        refName=config["Reference Genome"]["Name"] + ".fz.gz",
+        refName=config["Reference Genome"]["Name"] + ".fa.gz",
         dbsnp="resources/reference_snps/" + config["Reference SNPs"]["Filename"],
         memory="128G",
         gatk=config['Software']['GATK']['Executable']
