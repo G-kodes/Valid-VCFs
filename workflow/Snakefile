@@ -126,5 +126,5 @@ rule FORMAT_VALIDATION:
         "envs/GATK4.yaml"
     shell:
         """
-        {params.gatk} ValidateVariants -V {input.vcf} -R {params.refPath}/{params.refName} -D {params.dbsnp}
+        {params.gatk} ValidateVariants -V {input.vcf} -R resources/{params.refPath}/{params.refName} -D {params.dbsnp}
         """
