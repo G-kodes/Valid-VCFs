@@ -39,7 +39,7 @@ def GetInputFile(wildcards: object = dict()) -> str:
 
 
 def getSnpRef(wildcards: Wildcards) -> str:
-    return next(entry["File"] for entry in config["Reference Data"] if entry["Name"] == "Reference SNPs")
+    return next(entry["File"] for entry in config["Reference Data"] if entry["Type"] == "Reference SNPs")
 
 
 def getRef(wildcards: Wildcards) -> str:
