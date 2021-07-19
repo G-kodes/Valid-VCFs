@@ -1,24 +1,24 @@
 {
-    "Reference Genome": {
-        "Name": "GRCh38",
-        "Folder Name": "reference_genome"
-    },
-    "Reference SNPs": {
-        "Source Name": "dbSNP",
-        "Version": "146",
-        "Filename": "dbsnp_146.hg38.vcf.gz"
-    },
-    "Dataset": {
-        "VCF Version": "VCFv4.0",
-        "Name": "1000 Genomes Testers",
-        "Folder": "data"
-    },
-    "Software": {
-        "GATK": {
-            "Executable": "/apps/gatk-4.0.12.0/gatk"
-        },
-        "TABIX": {
-            "Executable": "tabix"
+    "Data": [
+        {
+            "Name": "1000G",
+            "VCF": "/nlustre/users/graeme/Datasets/1000g.vcf.gz"
         }
+    ],
+    "Reference Data": [
+        {
+            "Type": "Reference SNPs",
+            "File": "/nlustre/users/graeme/dbSNP/v146_hg38.vcf.gz"
+        },
+        {
+            "Type": "Reference Genome",
+            "File": "/nlustre/users/graeme/Reference_Genomes/GRCh38.fa.gz"
+        }
+    ],
+    "Executables": {
+        "GATK": "module load gatk-4.0.12.0; gatk",
+        "SamTools": "module load samtools-1.7; samtools faidx",
+        "BGZip": "module load samtools-1.7; bgzip",
+        "cp": "ln -s"
     }
 }

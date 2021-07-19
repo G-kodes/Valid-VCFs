@@ -1,113 +1,60 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "title": "Snakemake Configuration",
-    "description": "A configuration file for a snakemake pipeline.",
+    "title": "G-Kodes | Valid-FASTAs Configuration Schema",
+    "description": "A JSON schema configuration file for the G-Kodes | Valid-FASTAs Snakemake pipeline",
     "type": "object",
     "properties": {
-        "Reference Genome": {
-            "description": "The reference genome details needed to validate this VCF file",
-            "type": "object",
+        "Data": {
+            "description": "A list of objects containing the properties of the provided data",
+            "type":"array",
             "properties": {
                 "Name": {
-                    "description": "The version name of the reference genome",
-                    "type": "string",
-                    "enum": ["GRCh38", "GRCh37"]
+                    "description": "The name of the data file to be converted",
+                    "type": "string"
                 },
-                "Folder Name": {
-                    "description": "The name of the folder in the projects `resources` folder where the Reference Genome is located.",
-                    "type": "string",
-                    "default": "reference_genome"
+                "VCF": {
+                    "description": "An (absolute) path to the VCF files in question",
+                    "type": "string"
+                },
+                "Reference Genome": {
+                    "description": "An (absolute) path to the reference genome FASTA file to be compared against",
+                    "type": "string"
+                },"Reference SNPs": {
+                    "description": "An (absolute) path to the dbSNP VCF file to be validated against",
+                    "type": "string"
                 }
             },
             "required": [
-                "Name"
+                "Name",
+                "Path"
             ]
         },
-        "Reference SNPs": {
-            "description": "The reference SNP file (VCF format) details needed to validate the given input file against",
-            "type": "object",
-            "properties": {
-                "Source Name": {
-                    "description": "The name of the source from which the SNPs will be validated against",
-                    "type": "string"
-                },
-                "Version": {
-                    "description": "The version of the Reference SNP VCF file",
-                    "type": "string"
-                },
-                "Filename": {
-                    "description": "The name of the VCF file, as located in the resources folder",
-                    "type": "string"
-                },
-                "Folder Name": {
-                    "description": "The name of the folder in the projects `resources` folder where the Reference SNPs VCF is located.",
-                    "type": "string",
-                    "default": "reference_snps"
-                }
-            },
-            "required": [
-                "Source Name",
-                "Version",
-                "Filename"
-            ]
-        },
-        "Dataset": {
-            "description": "The data (VCF format) to be validated against the VCF spesification",
-            "type": "object",
-            "properties": {
-                "VCF Version": {
-                    "description": "The version number of the VCF spesification to validate against",
-                    "type": "string"
-                },
-                "Name": {
-                    "description": "The name of the dataset to be used in naming the output file",
-                    "type": "string"
-                },
-                "Folder Name": {
-                    "description": "The name of the folder in the projects `resources` folder where the data is located.",
-                    "type": "string",
-                    "default": "data"
-                }
-            },
-            "required": [
-                "VCF Version",
-                "Name"
-            ]
-        },
-        "Software": {
-            "description": "The software executables and their locations needed for this pipeline",
+        "Executables": {
+            "description": "An object containing key references to the commands needed to fire the executable softwares required for this pipeline",
             "type": "object",
             "properties": {
                 "GATK": {
-                    "description": "A functional copy of the GATK software, capable of running ValidateVariants",
-                    "type": "object",
-                    "properties": {
-                        "Executable": {
-                            "description": "The absolute file path or reference to the executable `gatk` file",
-                            "type": "string"
-                        }
-                    },
-                    "required": ["Executable"]
+                    "type":"string"
                 },
-                "TABIX": {
-                    "description": "A functional copy of the TABIX indexing software",
-                    "type": "object",
-                    "properties": {
-                        "Executable": {
-                            "description": "The absolute file path or reference to the executable `tabix` file",
-                            "type": "string"
-                        }
-                    },
-                    "required": ["Executable"]
+                "SamTools": {
+                    "type":"string"
+                },
+                "BGZip": {
+                    "type":"string"
+                },
+                "cp": {
+                    "type":"string"
                 }
             },
-            "required": ["GATK"]
+            "required": [
+                "GATK",
+                "SamTools",
+                "BGZip",
+                "cp"
+            ]
         }
     },
     "required": [
-        "Reference Genome",
-        "Reference SNPs",
-        "Dataset",
-        "Software"
+        "Data"
     ]
 }

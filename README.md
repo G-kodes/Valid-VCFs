@@ -1,10 +1,13 @@
 <div align="center">
-    <a href="https://github.com/G-kodes/">
-        <img height="80" src="https://github.com/G-kodes/G-Kodes/raw/main/assets/icon_main.png" alt="G-Kodes Profile" />
+    <a href="/resources/assets/Valid-VCFs.png">
+        <img height="100" src="./resources/assets/Valid-VCFs.png" />
     </a>
-    <img src="https://img.icons8.com/nolan/64/forward.png"/>
-    <a href="https://github.com/G-kodes/Valid-VCFs#g-kodes--valid-vcfs">
-        <img height="80" src="https://github.com/G-kodes/G-Kodes/raw/main/assets/products/Valid-VCFs.png" />
+    <a href="https://github.com/G-kodes/">
+        <img height="100" src="./resources/assets/G-Kodes.png" alt="G-Kodes Profile" />
+    </a>
+    <!-- <img src="https://img.icons8.com/nolan/64/forward.png"/> -->
+    <a href="/resources/assets/Valid-VCFs.png">
+        <img height="100" src="./resources/assets/Valid-VCFs.png" />
     </a>
 </div>
 <div align="center">
