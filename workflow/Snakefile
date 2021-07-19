@@ -18,20 +18,23 @@ ruleorder: CP > TABIX_INDEXING > BGZIP
 
 
 wildcard_constraints:
-    ext="(\.vcf|\.vcf\.gz|\.vcf\.gz\.tbi)$"
+    ext="(\.vcf|\.vcf\.gz|\.vcf\.gz\.tbi)$",
+
 
 reX = r"^([A-Z]{0,1}:{1}[\\|\/]{1,2}){0,1}(.+[\\\/])*(.+)(\.vcf|\.vcf\.gz|\.vcf\.gz\.tbi)$"
+
 
 rule all:
     """
     Request validation for all .vcf files given in the `resources/data` folder
     """
-    
 
     input:
         expand(
             "results/{filename}.{ext}",
-            filename=[re.search(reX, item).group(3) + "_VALIDATED" for item in config["Files"]],
+            filename=[
+                re.search(reX, item).group(3) + "_VALIDATED" for item in config["Files"]
+            ],
             ext=["vcf.gz", "vcf.gz.tbi"],
         ),
 
@@ -106,13 +109,12 @@ rule FORMAT_VALIDATION:
     """
 
     wildcard_constraints:
-        filename="([^_\n]+(?!_VALIDATED))"
-
+        filename="([^_\n]+(?!_VALIDATED))",
     log:
         "logs/{filename}_VALIDATED.log",
     input:
-        vcf="results/{filename}.vcf.gz",
         "results/{filename}.vcf.gz.tbi",
+        vcf="results/{filename}.vcf.gz",
         ref=getRef,
         snpRef=getSnpRef,
     output:
