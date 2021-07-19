@@ -19,7 +19,7 @@ ruleorder: CP > TABIX_INDEXING > BGZIP
 
 wildcard_constraints:
     ext="(\.vcf|\.vcf\.gz|\.vcf\.gz\.tbi)$",
-    filename="([^_\n]+(?!_VALIDATED))",
+    filename="((?!_VALIDATED)[^_\n]+)",
 
 
 reX = r"^([A-Z]{0,1}:{1}[\\|\/]{1,2}){0,1}(.+[\\\/])*(.+)(\.vcf|\.vcf\.gz|\.vcf\.gz\.tbi)$"
