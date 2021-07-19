@@ -4,29 +4,26 @@
     "description": "A JSON schema configuration file for the G-Kodes | Valid-FASTAs Snakemake pipeline",
     "type": "object",
     "properties": {
-        "Data": {
+        "Files": {
             "description": "A list of objects containing the properties of the provided data",
-            "type":"array",
+            "type":"array"
+        },
+        "Reference Data": {
+            "description": "A set of reference data files needed to perform validation with",
+            "type": "array",
             "properties": {
-                "Name": {
-                    "description": "The name of the data file to be converted",
+                "Type": {
+                    "description": "The type demarcation indicating what the file contains",
                     "type": "string"
                 },
-                "VCF": {
-                    "description": "An (absolute) path to the VCF files in question",
-                    "type": "string"
-                },
-                "Reference Genome": {
-                    "description": "An (absolute) path to the reference genome FASTA file to be compared against",
-                    "type": "string"
-                },"Reference SNPs": {
-                    "description": "An (absolute) path to the dbSNP VCF file to be validated against",
+                "File": {
+                    "description": "An (absolute) path to the file in question",
                     "type": "string"
                 }
             },
             "required": [
-                "Name",
-                "Path"
+                "Type",
+                "File"
             ]
         },
         "Executables": {
@@ -55,6 +52,6 @@
         }
     },
     "required": [
-        "Data"
+        "Files"
     ]
 }

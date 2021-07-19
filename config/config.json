@@ -1,9 +1,6 @@
 {
-    "Data": [
-        {
-            "Name": "1000G",
-            "VCF": "/nlustre/users/graeme/Datasets/1000g.vcf.gz"
-        }
+    "Files": [
+        "/nlustre/users/graeme/Datasets/1000g.vcf.gz"
     ],
     "Reference Data": [
         {
@@ -19,6 +16,7 @@
         "GATK": "module load gatk-4.0.12.0; gatk",
         "SamTools": "module load samtools-1.7; samtools faidx",
         "BGZip": "module load samtools-1.7; bgzip",
-        "cp": "ln -s"
+        "cp": "ln -s",
+        "Tabix": "module load samtools-1.7; tabix"
     }
 }

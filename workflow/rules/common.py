@@ -16,40 +16,26 @@ with open(os.path.join("config", "config.json"), 'r') as f:
     config = json.load(f)
 
 
-def DataPrepRequirements():
-    """Determine data-preperation requirements based on provided data in `../resources/data` folder of workflow.
+def GetInputFile(wildcards: object = dict()) -> str:
+    """A function that returns the absolute path of a file,
+    given its input name and the provided paths
+
+    Args:
+        wildcards (object): The name of the file
+
+    Returns:
+        str: The relative file path
     """
+    reX = r"^([A-Z]{0,1}:{1}[\\|\/]{1,2}){0,1}(.+[\\\/])*(.+)(\.vcf|\.vcf\.gz|\.vcf\.gz\.tbi)$"
 
-    regexes = {
-        "gzVCF": r"^resources[\/]data[\/](.*)(\.vcf\.gz)$",
-        "VCF": r"^resources[\/]data[\/](.*)(\.vcf)$",
-        "TABIX": r"^resources[\/]data[\/](.*)(\.vcf\.gz\.tbi)$",
-    }
-    data = dict(regexes)
-    results = dict(gzVCF=list(), TABIX=list(), MV=list(), ALL=set())
-    dataDir = os.path.join("resources", "data")
-
-    for name, inputRegex in regexes.items():
-        data[name] = [
-            re.search(inputRegex, filename).group(1)
-            for filename in glob(os.path.join(dataDir, "*"))
-            if re.search(inputRegex, filename)
-        ]
-
-    results["gzVCF"] = {
-        filename for filename in data["VCF"] if filename not in data["gzVCF"]
-    }
-    results["TABIX"] = {
-        filename
-        for filename in data["gzVCF"]
-        if filename not in data["TABIX"] and filename not in data["VCF"]
-    }
-    results["MV"] = {
-        filename for filename in data["TABIX"] if filename in data["gzVCF"]
-    }
-    results["ALL"].update(data["gzVCF"], data["VCF"], data["TABIX"])
-
-    return results
+    try:
+        item = next(file for file in config['Files'] if re.search(reX, file).group(
+            4) == wildcards.ext and re.search(reX, file).group(3) == wildcards.filename)
+    except Exception:
+        item = ""
+        print("Error: No Match Found for this input request. FILENAME: results/" +
+              wildcards.filename + wildcards.ext)
+    return item
 
 
 def getSnpRef(wildcards: Wildcards) -> str:
