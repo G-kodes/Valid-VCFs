@@ -18,7 +18,8 @@ ruleorder: CP > TABIX_INDEXING > BGZIP
 
 
 wildcard_constraints:
-    ext="(\.vcf|\.vcf\.gz|\.vcf\.gz\.tbi)$",
+    ext="(\.vcf|\.vcf\.gz|\.vcf\.gz\.tbi)$"
+
 reX = r"^([A-Z]{0,1}:{1}[\\|\/]{1,2}){0,1}(.+[\\\/])*(.+)(\.vcf|\.vcf\.gz|\.vcf\.gz\.tbi)$"
 
 rule all:
@@ -40,11 +41,11 @@ rule CP:
     Copy any files that do not require compression or generation
     """
     log:
-        "results/{filename}{ext}.log",
+        "results/{filename_lockhead}{ext}.log",
     input:
         GetInputFile,
     output:
-        "results/{filename}{ext}",
+        "results/{filename_lockhead}{ext}",
     params:
         executable=config["Executables"]["cp"],
     conda:
@@ -61,11 +62,11 @@ rule BGZIP:
     Use BG-Zip compression to generate GATK-comaptible `.gz` file for either FASTA or VCF format uncompressed inputs
     """
     log:
-        "results/{filename}.log",
+        "results/{filename_lockhead}.log",
     input:
-        "results/{filename}.vcf",
+        "results/{filename_lockhead}.vcf",
     output:
-        "results/{filename}.vcf.gz",
+        "results/{filename_lockhead}.vcf.gz",
     params:
         executable=config["Executables"]["BGZip"],
     conda:
@@ -83,11 +84,11 @@ rule TABIX_INDEXING:
     """
 
     log:
-        "results/{filename}.log",
+        "results/{filename_lockhead}.log",
     input:
-        "results/{filename}.vcf.gz",
+        "results/{filename_lockhead}.vcf.gz",
     output:
-        "results/{filename}.vcf.gz.tbi",
+        "results/{filename_lockhead}.vcf.gz.tbi",
     conda:
         "envs/GATK4.yaml"
     params:

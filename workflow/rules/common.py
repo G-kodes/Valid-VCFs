@@ -12,7 +12,7 @@ from snakemake.rules import Wildcards
 
 config = dict()
 
-with open(os.path.join("config", "config.json"), 'r') as f:
+with open(os.path.join("..", "..", "config", "config.json"), 'r') as f:
     config = json.load(f)
 
 
@@ -26,11 +26,11 @@ def GetInputFile(wildcards: object = dict()) -> str:
     Returns:
         str: The relative file path
     """
-    reX = r"^([A-Z]{0,1}:{1}[\\|\/]{1,2}){0,1}(.+[\\\/])*(.+)(\.vcf|\.vcf\.gz|\.vcf\.gz\.tbi)$"
+    reX = r"^([A-Z]{0,1}:{1}[\\|\/]{1,2}){0,1}(.+[\\\/])*([^_\n]+)(_VALIDATED){0,1}(\.vcf|\.vcf\.gz|\.vcf\.gz\.tbi)$"
 
     try:
-        item = next(file for file in config['Files'] if re.search(reX, file).group(
-            4) == wildcards.ext and re.search(reX, file).group(3) == wildcards.filename)
+        item = next(file for file in config['Files'] if re.search(reX, file).group(3) == wildcards.filename and re.search(reX, file).group(4) != "_VALIDATED" and re.search(reX, file).group(
+            5) == wildcards.ext)
     except Exception:
         item = ""
         print("Error: No Match Found for this input request. FILENAME: results/" +
