@@ -29,12 +29,12 @@ def GetInputFile(wildcards: object = dict()) -> str:
     reX = r"^([A-Z]{0,1}:{1}[\\|\/]{1,2}){0,1}(.+[\\\/])*([^_\n]+)(_VALIDATED){0,1}(\.vcf|\.vcf\.gz|\.vcf\.gz\.tbi)$"
 
     try:
-        item = next(file for file in config['Files'] if re.search(reX, file).group(3) == wildcards.filename_lockhead and re.search(
+        item = next(file for file in config['Files'] if re.search(reX, file).group(3) == wildcards.filename and re.search(
             reX, file).group(4) != "_VALIDATED" and re.search(reX, file).group(5) == wildcards.ext)
     except Exception:
         item = ""
         print("Error: No Match Found for this input request. FILENAME: results/" +
-              wildcards.filename_lockhead + wildcards.ext)
+              wildcards.filename + wildcards.ext)
     return item
 
 
