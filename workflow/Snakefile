@@ -105,12 +105,16 @@ rule FORMAT_VALIDATION:
     Perform spec validation of VCF format.
     """
 
+    wildcard_constraints:
+        filename="([^_\n]+(?!_VALIDATED))"
+
     log:
         "logs/{filename}_VALIDATED.log",
     input:
-        snpRef=getSnpRef,
         vcf="results/{filename}.vcf.gz",
+        "results/{filename}.vcf.gz.tbi",
         ref=getRef,
+        snpRef=getSnpRef,
     output:
         "results/{filename}_VALIDATED.vcf.gz",
         "results/{filename}_VALIDATED.vcf.gz.tbi",
