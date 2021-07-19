@@ -19,6 +19,7 @@ ruleorder: CP > TABIX_INDEXING > BGZIP
 
 wildcard_constraints:
     ext="(\.vcf|\.vcf\.gz|\.vcf\.gz\.tbi)$",
+    filename="([^_\n]+(?!_VALIDATED))",
 
 
 reX = r"^([A-Z]{0,1}:{1}[\\|\/]{1,2}){0,1}(.+[\\\/])*(.+)(\.vcf|\.vcf\.gz|\.vcf\.gz\.tbi)$"
@@ -43,6 +44,7 @@ rule CP:
     """
     Copy any files that do not require compression or generation
     """
+
     log:
         "results/{filename}{ext}.log",
     input:
@@ -64,6 +66,7 @@ rule BGZIP:
     """
     Use BG-Zip compression to generate GATK-comaptible `.gz` file for either FASTA or VCF format uncompressed inputs
     """
+
     log:
         "results/{filename}.log",
     input:
@@ -108,8 +111,6 @@ rule FORMAT_VALIDATION:
     Perform spec validation of VCF format.
     """
 
-    wildcard_constraints:
-        filename="([^_\n]+(?!_VALIDATED))",
     log:
         "logs/{filename}_VALIDATED.log",
     input:
