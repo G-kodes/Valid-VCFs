@@ -12,7 +12,7 @@ from snakemake.rules import Wildcards
 
 config = dict()
 
-with open(os.path.join("..", "..", "config", "config.json"), 'r') as f:
+with open(os.path.join("config", "config.json"), 'r') as f:
     config = json.load(f)
 
 
